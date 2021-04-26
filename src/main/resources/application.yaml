@@ -1,0 +1,24 @@
+quarkus:
+  http:
+    access-log:
+      enabled: true
+    port: ${SERVER_PORT:8081}
+  banner:
+    enabled: false
+  log:
+    console:
+      level: INFO
+      color: true
+      format: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%c{1.}] (%t) %s%e%n"
+  smallrye-openapi:
+    enable: ${SWAGGER_ENABLE:true}
+    path: "/swagger"
+  swagger-ui:
+    title: "TestProject 16779"
+    theme: "original"
+    path: "/swagger-ui"
+    tags-sorter: "alpha"
+    operations-sorter: "method"
+    display-request-duration: true
+    enable: ${SWAGGER_ENABLE:true}
+    always-include: ${SWAGGER_ENABLE:true}
