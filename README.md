@@ -1,5 +1,18 @@
 # ISSUE 16779
-## Error handler returns empty body on native build
+## Error handler returns empty body or exceptions on native build
+
+### Description
+* By default Quarkus [exception handler](https://howtodoinjava.com/resteasy/resteasy-exceptionmapper-example) can't serialize the error response body
+* Github link: [quarkusio/quarkus/issues/16779](https://github.com/quarkusio/quarkus/issues/16779)
+
+### Solutions
+| Solution |  Pro | Contra
+|----------|------|-------|
+| Dummy endpoint (`GET examples/errors`) which returns the error DTO | Creates meta data files from the error DTO like other endpoints | Useless endpoint | 
+| Manually convert the error DTO to JSON | Very clean solution | Ugly string concatenations, hard to maintain, easy to make mistakes | 
+| Add `@RegisterForReflection` to the response DTO | A solution which Quarkus supports | No one knows what this does and it looks a hacky `@Dirty` solution | 
+
+# Reproducing the issue
 
 ### usage information
 * Build native docker image: `./create-image.sh`
@@ -10,7 +23,7 @@
 * [x] Calling endpoint with a valid user `GET http://localhost:8081/users/16779` returns a User object
 * [x] Calling endpoint with an unknown user `GET http://localhost:8081/users/200888` returns an error object
 * [x] Calling endpoint on a native build with a valid user `GET http://localhost:8081/users/16779` returns a User object
-* [ ] FIXME: Calling endpoint on a native build with an unknown user `GET http://localhost:8081/users/200888` returns an empty body but should return an error object
+* [ ] FAILING: Calling endpoint on a native build with an unknown user `GET http://localhost:8081/users/200888` returns an empty body but should return an error object
 
 ### Exception \[only on native build\]
 ```java
